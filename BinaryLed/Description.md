@@ -1,3 +1,0 @@
-In this project i blinked the 2 LEDs in binary order.
-
-1 -> 2 -> 3 -> 0 - > 1 -> 2 .....

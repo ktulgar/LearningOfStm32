@@ -7,6 +7,8 @@
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 
+// Prototypes
+
 void initLEDS(void);
 void initUART(void);
 
@@ -66,24 +68,24 @@ int main(void)
 
 void initLEDS(void) {
 
-	RCC->AHB1ENR |= 0x8;
-	GPIOD->MODER |= 0x55000000;
-	GPIOD->OSPEEDR |=  0xFF000000;
-	GPIOD->PUPDR = 0 ;
+	RCC->AHB1ENR |= 0x8; // Enable GPIOD to use user LEDS
+	GPIOD->MODER |= 0x55000000; // Set as 12-13-14-15-16 as output
+	GPIOD->OSPEEDR |=  0xFF000000; // Set as 12-13-14-15 as High-Speed
+	GPIOD->PUPDR = 0 ; // No pull-up pull-down
 	
 }
 
 void initUART(void) {
 
-	RCC->APB1ENR |= 0x80000;
-	RCC->AHB1ENR |= 0x1;
+	RCC->APB1ENR |= 0x80000; // Enable UART4
+	RCC->AHB1ENR |= 0x1;     // Enable GPIOA
 	
-	GPIOA->MODER |= 0xA;
-	GPIOA->OTYPER |= 0x3;
-	GPIOA->AFR[0] |= 0x88;
+	GPIOA->MODER |= 0xA;     // Set GPIOA 0-1 as Alternate Function
+	GPIOA->OTYPER |= 0x3;    // Set GPIOA 0-1 as Open-Drain
+	GPIOA->AFR[0] |= 0x88;   // I specify that GPIOA 0-1 will be Uart rx and tx
 	
-	UART4->CR1 |= 0x200C; 
-	UART4->BRR = 0x1117;
+	UART4->CR1 |= 0x200C;    // Enable TE,RE,USART
+	UART4->BRR = 0x1117;     // I adjust the Baud Rate to 9600 . APB1 runs on 42 mhz. 
 
 }
 
@@ -184,9 +186,6 @@ void Error_Handler(void)
 
 void assert_failed(uint8_t *file, uint32_t line)
 { 
-  /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
+  
 }
 #endif 
